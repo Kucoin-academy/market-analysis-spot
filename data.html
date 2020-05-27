@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .ecahrtsData {
+            width: 100%;
+            margin: 50px auto;
+        }
+
+        .dataCheckbook {
+            text-align: right
+        }
+
+        #inputVal {
+            border: 1px solid rgb(80, 78, 78);
+            border-radius: 5px;
+            outline: none;
+            line-height: 25px;
+            text-indent: 1rem;
+            margin-left: 10px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 5px 15px;
+            font-size: 5px;
+            cursor: pointer;
+            text-align: center;   
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #555555;
+            border: none;
+            border-radius: 15px;
+        }
+
+        .button:hover {background-color: #000000}
+
+        .button:active {
+            background-color: #000000;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+        .ecahrtsData select {
+            outline: none;
+            background: none;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ecahrtsData">
+        <p style="position:relative;left:80px;">
+            请选择价差数据:
+            <select id="dateSelect"></select>
+            <select id="currencySelect"></select>
+            <select id="flieNameSelect"></select>
+            <button class="button" style="vertical-align:middle" id="btn"><span>获取价差</span></button>
+        </p>
+        <div id="main" style="width: 100%;height:50vw;"></div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+    <script>
+        // 间隔日期计算
+        function getAll(begin, end) {
+            let arr1 = begin.split("-");
+            let arr2 = end.split("-");
+            let arr1_ = new Date();
+            let arrTime = [];
+            arr1_.setUTCFullYear(arr1[0], arr1[1] - 1, arr1[2]);
+            let arr2_ = new Date();
+            arr2_.setUTCFullYear(arr2[0], arr2[1] - 1, arr2[2]);
+            let unixDb = arr1_.getTime();
+            let unixDe = arr2_.getTime();
+            for (let k = unixDb; k <= unixDe;) {
+                arrTime.push(this.datetimeparse(k, 'YY/MM/DD'));
+                k = k + 24 * 60 * 60 * 1000;
+            }
+            return arrTime;
+        }
+        // 时间格式处理
+        function datetimeparse(timestamp, format, prefix) {
+            if (typeof timestamp == 'string') {
+                timestamp = Number(timestamp)
+            };
+            //转换时区
+            let currentZoneTime = new Date(timestamp);
+            let currentTimestamp = currentZoneTime.getTime();
+            let offsetZone = currentZoneTime.getTimezoneOffset() / 60;//如果offsetZone>0是西区，西区晚
+            let offset = null;
+            //客户端时间与服务器时间保持一致，固定北京时间东八区。
+            offset = offsetZone + 8;
+            currentTimestamp = currentTimestamp + offset * 3600 * 1000
+            let newtimestamp = null;
+            if (currentTimestamp) {
+                if (currentTimestamp.toString().length === 13) {
+                    newtimestamp = currentTimestamp.toString()
+                } else if (currentTimestamp.toString().length === 10) {
+                    newtimestamp = currentTimestamp + '000'
+                } else {
+                    newtimestamp = null
+                }
+            } else {
+                newtimestamp = null
+            }
+            ;
+            let dateobj = newtimestamp ? new Date(parseInt(newtimestamp)) : new Date()
+            let YYYY = dateobj.getFullYear()
+            let MM = dateobj.getMonth() > 8 ? dateobj.getMonth() + 1 : '0' + (dateobj.getMonth() + 1)
+            let DD = dateobj.getDate() > 9 ? dateobj.getDate() : '0' + dateobj.getDate()
+            let HH = dateobj.getHours() > 9 ? dateobj.getHours() : '0' + dateobj.getHours()
+            let mm = dateobj.getMinutes() > 9 ? dateobj.getMinutes() : '0' + dateobj.getMinutes()
+            let ss = dateobj.getSeconds() > 9 ? dateobj.getSeconds() : '0' + dateobj.getSeconds()
+            let output = '';
+            let separator = '-'
+            if (format) {
+                separator = format.match(/-/) ? '-' : '-'
+                output += format.match(/yy/i) ? YYYY : ''
+                output += format.match(/MM/) ? (output.length ? separator : '') + MM : ''
+                output += format.match(/dd/i) ? (output.length ? separator : '') + DD : ''
+                output += format.match(/hh/i) ? (output.length ? ' ' : '') + HH : ''
+                output += format.match(/mm/) ? (output.length ? ':' : '') + mm : ''
+                output += format.match(/ss/i) ? (output.length ? ':' : '') + ss : ''
+            } else {
+                output += YYYY + separator + MM + separator + DD
+            }
+            output = prefix ? (prefix + output) : output
+
+            return newtimestamp ? output : ''
+        }
+        // csv数据转数组
+        function csvJSON(csv) {
+            var lines = csv.split("\n");
+            var result = [];
+            var headers = JSON.parse(JSON.stringify(lines[0].split(",")).replace('\\r', ""));
+            for (var i = 1; i < lines.length - 1; i++) {
+                var obj = [];
+                var currentline = lines[i].split(",");
+                for (var j = 0; j < headers.length; j++) {
+                    if (currentline[j] !== '' && currentline[j] != undefined) {
+                        obj.push(currentline[j]);
+
+                    }
+                }
+                result.push(obj);
+            }
+            return result;
+        }
+        // 转换科学计数法
+        function toNonExponential(num) {
+            var m = num.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
+            return num.toFixed(Math.max(0, (m[1] || '').length - m[2]));
+        }
+        // select数据拼接
+        function initSelect(data, id) {
+            var html = ''
+            data.map(item => {
+                var name = item.name == undefined ? item : item.name;
+                var value = item.value == undefined ? item : item.value;
+                html += `<option value ="${value}">${name}</option>`
+            })
+            $('#' + id).html(html);
+        }
+        // 图表init
+        function dataInit(rawData) {
+            // 获取图表渲染位置
+            var myChart = echarts.init(document.getElementById('main'));
+            // 图表Y轴数据处理 格式 [[data1,data2,data3...],[...]]
+            var data = rawData.map(function (item) {
+                return [+Number(item[1]), +Number(item[2]), +Number(item[3]), +Number(item[4])];
+            });
+            // 图表X轴数据处理 格式 [data1,data2,data3...]
+            var dates = rawData.map(function (item) {
+                return item[0];
+            });
+            var option = {
+                // 图表背景色
+                backgroundColor: '#fff',
+                // 系列标签
+                legend: {
+                    // 数据
+                    data: ['1min'],
+                    // 关闭时的颜色
+                    inactiveColor: '#777',
+                    // 文字样式配置
+                    textStyle: {
+                        color: '#fff'
+                    },
+                    // 是否显示
+                    show: false
+                },
+                // 提示框
+                tooltip: {
+                    // 触发类型 'axis' 为坐标轴触发 'item' 数据项图形触发 'none' 不触发
+                    trigger: 'axis',
+                    // 坐标轴指示器配置项
+                    axisPointer: {
+                        // 是否开启动画
+                        animation: false,
+                        //指示器类型。 'line' 直线指示器 'shadow' 阴影指示器 'none' 无指示器 'cross' 十字准星指示器
+                        type: 'cross',
+                        // type 为 'line' 时有效 
+                        lineStyle: {
+                            color: '#000000',
+                            width: 1,
+                            opacity: 1
+                        }
+                    },
+                    // 提示框个性化处理  这里是处理科学计数法显示问题
+                    formatter: function (params) {
+                        return params[0].name + '<br>' +
+                            'open：' + toNonExponential(params[0].value[1]) + '<br>' +
+                            'high：' + toNonExponential(params[0].value[2]) + '<br>' +
+                            'low：' + toNonExponential(params[0].value[3]) + '<br>' +
+                            'close：' + toNonExponential(params[0].value[4])
+                    }
+                },
+                // X轴
+                xAxis: {
+                    //坐标轴类型。 'value' 数值轴，适用于连续数据。'category' 类目轴，适用于离散的类目数据。'time' 时间轴，适用于连续的时序数据，'log' 对数轴。适用于对数数据。
+                    type: 'category',
+                    data: dates,
+                    // 坐标轴轴线设置
+                    axisLine: { lineStyle: { color: '#000000' } }
+                },
+                // Y轴
+                yAxis: {
+                    // 是否是脱离 0 值比例。设置成 true 后坐标刻度不会强制包含零刻度
+                    scale: true,
+                    axisLine: { lineStyle: { color: '#000000' } },
+                    // 分割线设置
+                    splitLine: { show: false }
+                },
+                // 图表网格
+                grid: {
+                    // 网格底部距离，值为像素或百分比 top、left、right同理
+                    bottom: 80
+                },
+                // 图表缩放
+                dataZoom: [{
+                    textStyle: {
+                        color: '#8392A5'
+                    },
+                    // icon形状
+                    handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                    // icon大小
+                    handleSize: '80%',
+                    // 数据阴影样式
+                    dataBackground: {
+                        // 填充样式
+                        areaStyle: {
+                            color: '#8392A5'
+                        },
+                        // 线条样式
+                        lineStyle: {
+                            opacity: 0.8,
+                            color: '#8392A5'
+                        }
+                    },
+                    // 手柄样式配置
+                    handleStyle: {
+                        color: '#fff',
+                        // 阴影模糊大小
+                        shadowBlur: 3,
+                        // 阴影模糊颜色
+                        shadowColor: 'rgba(0, 0, 0, 0.6)',
+                        // 阴影水平偏移
+                        shadowOffsetX: 2,
+                        // 阴影垂直偏移
+                        shadowOffsetY: 2
+                    }
+                }, {
+                    type: 'inside'
+                }],
+                // 动画
+                animation: false,
+                // 图表系列列表 可配置多项
+                series: [
+                    {
+                        // 图表类型 candlestick为k线图
+                        type: 'candlestick',
+                        name: '1min',
+                        data: data,
+                        // K 线图的图形样式
+                        itemStyle: {
+                            // 阳线 图形的颜色。
+                            color: '#ff1a1a',
+                            // 阴线 图形的颜色。
+                            color0: '#ff1a1a',
+                            // 阳线 图形的描边颜色。
+                            borderColor: '#e60000',
+                            // 阴线 图形的描边颜色。
+                            borderColor0: '#e60000'
+                        }
+                    },
+                ]
+            };
+            myChart.setOption(option);
+        }
+        // 数据请求
+        function getData(url) {
+            $.ajax({
+                url: url,
+                async: false,
+                success: (data, heads, status) => {
+                    result = csvJSON(data);
+                    dataInit(result);
+                },
+                error: error => {
+                    console.log(JSON.stringify(error));
+                }
+
+            });
+        }
+        // 获取数据点击
+        $('#btn').on('click', () => {
+            var date = $('#dateSelect').val();
+            var currency = $('#currencySelect').val();
+            var fileName = $('#flieNameSelect').val();
+            var url = 'files/' + date + '/' + currency + '/' + fileName + '.csv';
+
+            getData(url);
+        })
+        // 日期数据
+        var dateOption = getAll('2020-05-25', datetimeparse(new Date(), 'YY/MM/DD'));
+        dateOption.pop()
+        // 币种数据
+        var currencyOption = [
+            {
+                value: 'BTC-USDT',
+                name: 'BTC-USDT'
+            },
+            {
+                value: 'ETH-USDT',
+                name: 'ETH-USDT'
+            },
+            {
+                value: 'LTC-USDT',
+                name: 'LTC-USDT'
+            },
+            {
+                value: 'BCHABC-USDT',
+                name: 'BCHABC-USDT'
+            },
+            {
+                value: 'BCHSV-USDT',
+                name: 'BCHSV-USDT'
+            },
+            {
+                value: 'EOS-USDT',
+                name: 'EOS-USDT'
+            },
+            {
+                value: 'XRP-USDT',
+                name: 'XRP-USDT'
+            },
+            {
+                value: 'XTZ-USDT',
+                name: 'XTZ-USDT'
+            },
+            {
+                value: 'TRX-USDT',
+                name: 'TRX-USDT'
+            },
+            {
+                value: 'ADA-USDT',
+                name: 'ADA-USDT'
+            },
+            {
+                value: 'ETC-USDT',
+                name: 'ETC-USDT'
+            },
+            {
+                value: 'ZEC-USDT',
+                name: 'ZEC-USDT'
+            },
+            {
+                value: 'ATOM-USDT',
+                name: 'ATOM-USDT'
+            },
+            {
+                value: 'DASH-USDT',
+                name: 'DASH-USDT'
+            },
+            {
+                value: 'ETH-BTC',
+                name: 'ETH-BTC'
+            },
+            {
+                value: 'XRP-BTC',
+                name: 'XRP-BTC'
+            },
+            {
+                value: 'BCHSV-BTC',
+                name: 'BCHSV-BTC'
+            }
+        ]
+        // 文件名称数据
+        var flieNameOption = [
+            {
+                value: 'kucoin-okex',
+                name: 'kucoin-okex'
+            },
+            {
+                value: 'kucoin-huobi',
+                name: 'kucoin-huobi'
+            }
+        ]
+        initSelect(dateOption, 'dateSelect')
+        initSelect(currencyOption, 'currencySelect')
+        initSelect(flieNameOption, 'flieNameSelect')
+        getData('https://raw.githubusercontent.com/1bazinga25/pages/master/' + dateOption[dateOption.length-1] + '/BTC-USDT/kucoin-okex.csv');
+    </script>
+</body>
+
+</html>
