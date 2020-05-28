@@ -8,7 +8,7 @@ Analysis of Kucoin mainstream currencies with other exchange markets
 
 - ADA-USDT
 
--| - | kucoin | kucoin-huobi | kucoin-okex
+symbol | type | kucoin | kucoin-huobi | kucoin-okex
 ---|---|---|---|---
 ADA-USDT | mean | 0.0533859352465481 | 0.00000530013309496492 | 0.00000780511889027341
 ADA-USDT | std | 0.000505669478670114 | 0.0000126989326266626 | 0.0000212713536954228
