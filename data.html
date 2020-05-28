@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <!-- <title>Document</title> -->
     <style>
         .ecahrtsData {
             width: 100%;
@@ -54,15 +54,15 @@
 </head>
 
 <body>
-    <div class="ecahrtsData">
-        <p style="position:relative;left:80px;">
+    <div class="ecahrtsData" style="position:relative;left:-35px;top:-50px">
+        <p style="position:relative;left:70px;">
             请选择价差数据:
             <select id="dateSelect"></select>
             <select id="currencySelect"></select>
             <select id="flieNameSelect"></select>
             <button class="button" style="vertical-align:middle" id="btn"><span>获取价差</span></button>
         </p>
-        <div id="main" style="width: 100%;height:50vw;"></div>
+        <div id="main" style="width: 100%;height:50vw;position:relative;top:-15px;"></div>
     </div>
 
 
@@ -242,10 +242,17 @@
                 // 图表网格
                 grid: {
                     // 网格底部距离，值为像素或百分比 top、left、right同理
-                    bottom: 80
+                    bottom: 60,
+                    top: 10
                 },
                 // 图表缩放
                 dataZoom: [{
+                    id: 'dataZoomX',
+                    type: 'slider',
+                    xAxisIndex: [0],
+                    filterMode: 'filter', // 设定为 'filter' 从而 X 的窗口变化会影响 Y 的范围。
+                    start: 87.5,
+                    end: 100,
                     textStyle: {
                         color: '#8392A5'
                     },
@@ -292,13 +299,13 @@
                         // K 线图的图形样式
                         itemStyle: {
                             // 阳线 图形的颜色。
-                            color: '#ff1a1a',
+                            color: '#00b33c',
                             // 阴线 图形的颜色。
-                            color0: '#ff1a1a',
+                            color0: '#00b33c',
                             // 阳线 图形的描边颜色。
-                            borderColor: '#e60000',
+                            borderColor: '#00802b',
                             // 阴线 图形的描边颜色。
-                            borderColor0: '#e60000'
+                            borderColor0: '#00802b'
                         }
                     },
                 ]
@@ -325,7 +332,7 @@
             var date = $('#dateSelect').val();
             var currency = $('#currencySelect').val();
             var fileName = $('#flieNameSelect').val();
-            var url = 'files/' + date + '/' + currency + '/' + fileName + '.csv';
+            var url = 'https://raw.githubusercontent.com/1bazinga25/market-analysis-spot/master/'+'files/' + date + '/' + currency + '/' + fileName + '.csv';
 
             getData(url);
         })

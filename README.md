@@ -1,7 +1,7 @@
 # market-analysis-spot
 Analysis of Kucoin mainstream currencies with other exchange markets
 
-<iframe width="100%" height="450" src="./data.html" frameborder="no" border="0"></iframe>
+<iframe width="100%" height="500" src="./data.html" frameborder="no" border="0"></iframe>
 
 # analysis
 * Day: 2020-05-26
