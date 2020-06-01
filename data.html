@@ -175,7 +175,7 @@
             var myChart = echarts.init(document.getElementById('main'));
             // 图表Y轴数据处理 格式 [[data1,data2,data3...],[...]]
             var data = rawData.map(function (item) {
-                return [+Number(item[1]), +Number(item[2]), +Number(item[3]), +Number(item[4])];
+                return [+Number(item[1]), +Number(item[4]), +Number(item[3]), +Number(item[2])];
             });
             // 图表X轴数据处理 格式 [data1,data2,data3...]
             var dates = rawData.map(function (item) {
@@ -217,10 +217,10 @@
                     // 提示框个性化处理  这里是处理科学计数法显示问题
                     formatter: function (params) {
                         return params[0].name + '<br>' +
-                            'open：' + toNonExponential(params[0].value[1]) + '<br>' +
-                            'high：' + toNonExponential(params[0].value[2]) + '<br>' +
-                            'low：' + toNonExponential(params[0].value[3]) + '<br>' +
-                            'close：' + toNonExponential(params[0].value[4])
+                            'open:' + toNonExponential(params[0].value[1]) + '<br>' +
+                            'close:' + toNonExponential(params[0].value[2]) + '<br>' +
+                            'low:' + toNonExponential(params[0].value[3]) + '<br>' +
+                            'high:' + toNonExponential(params[0].value[4])
                     }
                 },
                 // X轴
@@ -302,11 +302,11 @@
                             // 阳线 图形的颜色。
                             color: '#00b33c',
                             // 阴线 图形的颜色。
-                            color0: '#00b33c',
+                            color0: '#ff4000',
                             // 阳线 图形的描边颜色。
                             borderColor: '#00802b',
                             // 阴线 图形的描边颜色。
-                            borderColor0: '#00802b'
+                            borderColor0: '#cc3300'
                         }
                     },
                 ]
