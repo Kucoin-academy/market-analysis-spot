@@ -80,9 +80,9 @@
             arr2_.setUTCFullYear(arr2[0], arr2[1] - 1, arr2[2]);
             let unixDb = arr1_.getTime();
             let unixDe = arr2_.getTime();
-            for (let k = unixDb; k <= unixDe;) {
+            for (let k = unixDe; k >= unixDb;) {
+                k = k - 24 * 60 * 60 * 1000;
                 arrTime.push(this.datetimeparse(k, 'YY/MM/DD'));
-                k = k + 24 * 60 * 60 * 1000;
             }
             return arrTime;
         }
