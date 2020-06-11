@@ -141,16 +141,15 @@
             var lines = csv.split("\n");
             var result = [];
             var headers = JSON.parse(JSON.stringify(lines[0].split(",")).replace('\\r', ""));
-            for (var i = 1; i < lines.length - 1; i++) {
+            for (var i = 1; i < lines.length; i++) {
                 var obj = [];
                 var currentline = lines[i].split(",");
                 for (var j = 0; j < headers.length; j++) {
                     if (currentline[j] !== '' && currentline[j] != undefined) {
                         obj.push(currentline[j]);
-
                     }
                 }
-                result.push(obj);
+                obj.length >= 5 && result.push(obj);
             }
             return result;
         }
