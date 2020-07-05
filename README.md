@@ -21,8 +21,6 @@ Analysis of Kucoin mainstream currencies with other exchange markets (UTC +08:00
 
   * [DASH-USDT](#dash-usdt)
 
-  * [EOS-USDT](#eos-usdt)
-
   * [ETC-USDT](#etc-usdt)
 
   * [ETH-BTC](#eth-btc)
@@ -131,19 +129,6 @@ DASH-USDT | 25%(分位数) | 66.57 | -0.0100000000000051 | -0.0149999999999864
 DASH-USDT | 50%(中位数) | 66.915 | 0.00499999999999545 | 0.00499999999999545
 DASH-USDT | 75%(分位数) | 67.165 | 0.0150000000000148 | 0.0200000000000102
 DASH-USDT | max(最大值) | 67.455 | 0.125 | 0.265000000000015
-
-
-### EOS-USDT
-
-symbol | type | kucoin | kucoin-huobi | kucoin-okex
----|---|---|---|---
-EOS-USDT | mean(均值) | 2.44844434453256 | - | 0.000095454565030131
-EOS-USDT | std(标准差) | 0.0207876162463104 | - | 0.0006105259665492
-EOS-USDT | min(最小值) | 2.4012 | - | -0.00475000000000003
-EOS-USDT | 25%(分位数) | 2.4283 | - | -0.000350000000000073
-EOS-USDT | 50%(中位数) | 2.45535 | - | 0.00014999999999965
-EOS-USDT | 75%(分位数) | 2.46595 | - | 0.000450000000000284
-EOS-USDT | max(最大值) | 2.4969 | - | 0.00495000000000001
 
 
 ### ETC-USDT
