@@ -15,13 +15,7 @@ Analysis of Kucoin mainstream currencies with other exchange markets (UTC +08:00
 
   * [BCHSV-BTC](#bchsv-btc)
 
-  * [BCHSV-USDT](#bchsv-usdt)
-
-  * [BTC-USDT](#btc-usdt)
-
   * [DASH-USDT](#dash-usdt)
-
-  * [EOS-USDT](#eos-usdt)
 
   * [ETC-USDT](#etc-usdt)
 
@@ -34,8 +28,6 @@ Analysis of Kucoin mainstream currencies with other exchange markets (UTC +08:00
   * [TRX-USDT](#trx-usdt)
 
   * [XRP-BTC](#xrp-btc)
-
-  * [XRP-USDT](#xrp-usdt)
 
   * [XTZ-USDT](#xtz-usdt)
 
@@ -94,19 +86,6 @@ BCHSV-BTC | 75%(分位数) | 0.0190225 | 0.000003000000000003 | 0.00000399999999
 BCHSV-BTC | max(最大值) | 0.0191085 | 0.0000255000000000012 | 0.0000365000000000018
 
 
-### BCHSV-USDT
-
-symbol | type | kucoin | kucoin-huobi | kucoin-okex
----|---|---|---|---
-BCHSV-USDT | mean(均值) | 172.731293375508 | -0.000217201688724673 | 0
-BCHSV-USDT | std(标准差) | 1.08502653573844 | 0.035385502273779 | 0
-BCHSV-USDT | min(最小值) | 170.205 | -0.170099999999991 | 0
-BCHSV-USDT | 25%(分位数) | 171.66 | -0.0237499999999784 | 0
-BCHSV-USDT | 50%(中位数) | 172.92 | 0.000399999999956435 | 0
-BCHSV-USDT | 75%(分位数) | 173.675 | 0.0234000000000094 | 0
-BCHSV-USDT | max(最大值) | 174.885 | 0.378349999999955 | 0
-
-
 ### BTC-USDT
 
 symbol | type | kucoin | kucoin-huobi | kucoin-okex
@@ -131,19 +110,6 @@ DASH-USDT | 25%(分位数) | 69.185 | -0.0150000000000148 | -0.0250000000000057
 DASH-USDT | 50%(中位数) | 69.325 | 0 | 0
 DASH-USDT | 75%(分位数) | 69.455 | 0.0150000000000148 | 0.0299999999999869
 DASH-USDT | max(最大值) | 70.045 | 0.114999999999981 | 0.115000000000009
-
-
-### EOS-USDT
-
-symbol | type | kucoin | kucoin-huobi | kucoin-okex
----|---|---|---|---
-EOS-USDT | mean(均值) | 2.49118541709475 | -0.000183720553290298 | 0
-EOS-USDT | std(标准差) | 0.0126256776166139 | 0.000619264875988288 | 0
-EOS-USDT | min(最小值) | 2.4605 | -0.00344999999999995 | 0
-EOS-USDT | 25%(分位数) | 2.4815 | -0.000649999999999373 | 0
-EOS-USDT | 50%(中位数) | 2.4935 | -0.000249999999999417 | 0
-EOS-USDT | 75%(分位数) | 2.5005 | 0.000249999999999861 | 0
-EOS-USDT | max(最大值) | 2.5235 | 0.00239999999999974 | 0
 
 
 ### ETC-USDT
@@ -222,19 +188,6 @@ XRP-BTC | 25%(分位数) | 0.000021095 | -0.00000000999999999999821 | -0.0000000
 XRP-BTC | 50%(中位数) | 0.000021145 | 0 | 0
 XRP-BTC | 75%(分位数) | 0.000021255 | 0 | 0.00000000499999999999741
 XRP-BTC | max(最大值) | 0.000021595 | 0.0000000350000000000022 | 0.000000029999999999998
-
-
-### XRP-USDT
-
-symbol | type | kucoin | kucoin-huobi | kucoin-okex
----|---|---|---|---
-XRP-USDT | mean(均值) | 0.193523465423511 | 0.0000124201987215024 | 0
-XRP-USDT | std(标准差) | 0.00153595545715533 | 0.0000478404065023332 | 0
-XRP-USDT | min(最小值) | 0.19125 | -0.000255000000000005 | 0
-XRP-USDT | 25%(分位数) | 0.19245 | -0.0000199999999999922 | 0
-XRP-USDT | 50%(中位数) | 0.19295 | 0.0000149999999999872 | 0
-XRP-USDT | 75%(分位数) | 0.19405 | 0.0000450000000000172 | 0
-XRP-USDT | max(最大值) | 0.1982 | 0.000175000000000008 | 0
 
 
 ### XTZ-USDT
