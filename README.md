@@ -15,10 +15,6 @@ Analysis of Kucoin mainstream currencies with other exchange markets (UTC +08:00
 
   * [BCHSV-BTC](#bchsv-btc)
 
-  * [BCHSV-USDT](#bchsv-usdt)
-
-  * [BTC-USDT](#btc-usdt)
-
   * [DASH-USDT](#dash-usdt)
 
   * [EOS-USDT](#eos-usdt)
@@ -93,31 +89,6 @@ BCHSV-BTC | 50%(中位数) | 0.0189525 | 0.000001000000000001 | 0.00000100000000
 BCHSV-BTC | 75%(分位数) | 0.0189945 | 0.00000449999999999756 | 0.00000499999999999806
 BCHSV-BTC | max(最大值) | 0.019182 | 0.0000380000000000033 | 0.0000305000000000028
 
-
-### BCHSV-USDT
-
-symbol | type | kucoin | kucoin-huobi | kucoin-okex
----|---|---|---|---
-BCHSV-USDT | mean(均值) | 177.259183042969 | 0.00449722538758091 | 0
-BCHSV-USDT | std(标准差) | 0.734337675041279 | 0.031420724058457 | 0
-BCHSV-USDT | min(最小值) | 175.505 | -0.451099999999997 | 0
-BCHSV-USDT | 25%(分位数) | 176.675 | -0.0167500000000018 | 0
-BCHSV-USDT | 50%(中位数) | 177.12 | 0.00350000000003092 | 0
-BCHSV-USDT | 75%(分位数) | 177.855 | 0.0252499999999998 | 0
-BCHSV-USDT | max(最大值) | 179.385 | 0.335499999999996 | 0
-
-
-### BTC-USDT
-
-symbol | type | kucoin | kucoin-huobi | kucoin-okex
----|---|---|---|---
-BTC-USDT | mean(均值) | 9350.20395684023 | 0.323859054834567 | 0
-BTC-USDT | std(标准差) | 19.846946164933 | 1.28791419792103 | 0
-BTC-USDT | min(最小值) | 9276.75 | -4.65500000000065 | 0
-BTC-USDT | 25%(分位数) | 9333.65 | -0.524999999997817 | 0
-BTC-USDT | 50%(中位数) | 9352.45 | 0.295000000001892 | 0
-BTC-USDT | 75%(分位数) | 9366.55 | 1.18500000000131 | 0
-BTC-USDT | max(最大值) | 9388.55 | 13.4550000000017 | 0
 
 
 ### DASH-USDT
